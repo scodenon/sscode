@@ -1,7 +1,7 @@
 services:
   - type: web
     name: gestor-api
-    env: docker
+    runtime: docker
     plan: starter
     autoDeploy: true
     healthCheckPath: /api/health
@@ -17,8 +17,8 @@ services:
 
   - type: web
     name: gestor-web
-    env: static
-    plan: starter
+    runtime: static
+    plan: free
     autoDeploy: true
     buildCommand: npm ci && npm run build
     staticPublishPath: dist
