@@ -14,3 +14,14 @@ services:
         sync: false
       - key: JWT_SECRET
         sync: false
+
+  - type: web
+    name: gestor-web
+    env: static
+    plan: starter
+    autoDeploy: true
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_BASE_URL
+        sync: false

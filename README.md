@@ -39,13 +39,13 @@ Si en Windows te sale `EPERM` al regenerar (archivo en uso), detén `npm run dev
   - `npm run dev`
 
 ## Producción (24/7)
-Para que el API esté activo todo el tiempo:
-- API: Render (always-on) usando `Dockerfile` y `render.yaml`.
-- Frontend: Vercel.
+Para que esté activo todo el tiempo, despliega en Render con el blueprint `render.yaml`:
+- `gestor-api` (API, Docker, always-on)
+- `gestor-web` (frontend, static)
 
 Variables:
 - Render (API): `DATABASE_URL`, `JWT_SECRET`, `PORT=3001`
-- Vercel (frontend): `VITE_API_BASE_URL=https://TU-API.onrender.com`
+- Render (frontend): `VITE_API_BASE_URL=https://TU-API.onrender.com`
 
 ## Producción (Vercel)
 - Si desplegarás solo el frontend en Vercel, configura `VITE_API_BASE_URL`.
