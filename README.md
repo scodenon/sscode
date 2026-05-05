@@ -48,7 +48,15 @@ Variables:
 - Render (frontend): `VITE_API_BASE_URL=https://TU-API.onrender.com`
 
 ## Producción (Vercel)
-- Si desplegarás solo el frontend en Vercel, configura `VITE_API_BASE_URL`.
+- Vercel soporta frontend + API (serverless).
+- Variables en Vercel (Project → Settings → Environment Variables):
+  - `DATABASE_URL` (Supabase Postgres, recomendado Session Pooler si tu red es IPv4)
+  - `JWT_SECRET` (clave larga)
+  - `VITE_API_BASE_URL` (opcional; si lo dejas vacío/omitido, el frontend usa `/api` del mismo dominio)
+
+Reducir “cold start” (mejor esfuerzo):
+- En GitHub → Settings → Secrets and variables → Actions → agrega `KEEP_ALIVE_URL` con tu dominio de Vercel.
+- El workflow `.github/workflows/keep-alive.yml` hace ping a `/api/health` cada 5 minutos.
 
 O separado:
 - API: `npm run api:dev` (http://localhost:3001)
