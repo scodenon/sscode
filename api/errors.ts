@@ -54,6 +54,29 @@ export function asApiError(error: unknown): ApiError {
     return new ApiError(400, 'VALIDATION_ERROR', 'Solicitud inválida.')
   }
   if (error instanceof Prisma.PrismaClientInitializationError) {
+    const code = (error as unknown as { errorCode?: string }).errorCode
+    if (code === 'P1000') {
+      return new ApiError(
+        503,
+        'DB_AUTH_ERROR',
+        'Credenciales inválidas para la base de datos. Revisa `DATABASE_URL` (usuario/contraseña).',
+      )
+    }
+    if (code === 'P1001') {
+      return new ApiError(
+        503,
+        'DB_UNREACHABLE',
+        'No se puede conectar a la base de datos. Verifica host/puerto/red y que usas el pooler correcto.',
+      )
+    }
+    const msg = (error.message ?? '').toLowerCase()
+    if (msg.includes('pgbouncer') || msg.includes('pooler')) {
+      return new ApiError(
+        503,
+        'DB_POOLER_ERROR',
+        'Problema con el pooler. En Supabase usa "Session pooler" (no "Transaction pooler") para Prisma.',
+      )
+    }
     return new ApiError(503, 'DB_INIT_ERROR', 'No se pudo inicializar la base de datos.')
   }
   if (error instanceof Prisma.PrismaClientRustPanicError) {
