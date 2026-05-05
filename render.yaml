@@ -18,7 +18,6 @@ services:
   - type: web
     name: gestor-web
     runtime: static
-    plan: free
     autoDeploy: true
     buildCommand: npm ci && npm run build
     staticPublishPath: dist
